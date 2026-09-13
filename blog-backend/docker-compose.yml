@@ -1,0 +1,20 @@
+# Postgres-only compose kept for local npm development.
+# Prefer the root docker-compose.yml for the full stack:
+#   cd .. && docker compose up --build
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: blog_db
+    ports:
+      # Host 5432 is often taken by a local Postgres install or another container.
+      - '${POSTGRES_PORT:-5433}:5432'
+    volumes:
+      - blog_pg_data:/var/lib/postgresql/data
+
+volumes:
+  blog_pg_data:
